@@ -34,7 +34,6 @@ class RegisterAccount(APIView):
             errors = {}
 
             # проверяем пароль на сложность
-
             try:
                 validate_password(request.data['password'])
             except Exception as password_error:
