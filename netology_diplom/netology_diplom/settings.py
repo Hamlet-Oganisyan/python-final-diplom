@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 
     'rest_framework',
     'app_users',
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'app_shops',
     'rest_framework.authtoken',
     'django_rest_passwordreset',
+    'drf_spectacular',
 
 ]
 
@@ -140,12 +142,21 @@ AUTH_USER_MODEL = 'app_users.User'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS = True
 
-EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_HOST_USER = 'hamogan@mail.ru'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = '465'
+EMAIL_PORT = os.getenv('EMAIL_PORT ')
 EMAIL_USE_SSL = True
 SERVER_EMAIL = EMAIL_HOST_USER
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Shop API',
+    'DESCRIPTION': 'Cellphones ordering service',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -164,6 +175,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 }
 
