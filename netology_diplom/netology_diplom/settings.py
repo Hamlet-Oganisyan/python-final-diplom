@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    'social_auth',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -62,27 +61,27 @@ INSTALLED_APPS = [
 
 ]
 
-SITE_ID = 2
+SITE_ID = 1
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            # 'profile',
-            # 'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'offline',
-        },
-        'OAUTH_PKCE_ENABLED': True,
-    },
-    'vk': {
-        'APP': {
-            'client_id': '51583915',
-            'secret': 'EagLl8X3NsEkUTJXYEhw',
-            'key': 'a47369bba47369bba47369bb2ba7607210aa473a47369bbc0673701a873a60093d52a1d'
-        }
-    },
+    # 'google': {
+    #     'SCOPE': [
+    #         # 'profile',
+    #         # 'email',
+    #     ],
+    #     'AUTH_PARAMS': {
+    #         'access_type': 'offline',
+    #     },
+    #     'OAUTH_PKCE_ENABLED': True,
+    # },
+    # 'vk': {
+    #     'APP': {
+    #         'client_id': '51583915',
+    #         'secret': 'EagLl8X3NsEkUTJXYEhw',
+    #         'key': 'a47369bba47369bba47369bb2ba7607210aa473a47369bbc0673701a873a60093d52a1d'
+    #     }
+    # },
     'github': {
         'SCOPE': [
             'user',
@@ -178,16 +177,13 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'app_users.User'
 
 
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 
 #OAuth
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.contrib.vkontakte.VKontakteOAuth2Backend',
 ]
 
 
@@ -234,8 +230,8 @@ REST_FRAMEWORK = {
         ],
 
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '4/min',
-        'user': '20/min'
+        'anon': '12/min',
+        'user': '200/min'
     },
 
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
