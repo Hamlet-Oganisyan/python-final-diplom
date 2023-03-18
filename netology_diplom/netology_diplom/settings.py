@@ -42,7 +42,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'django.contrib.sites',
+
+    'social_auth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.vk',
 
     'rest_framework',
     'app_users',
@@ -53,6 +61,36 @@ INSTALLED_APPS = [
     'drf_spectacular',
 
 ]
+
+SITE_ID = 2
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            # 'profile',
+            # 'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'offline',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    },
+    'vk': {
+        'APP': {
+            'client_id': '51583915',
+            'secret': 'EagLl8X3NsEkUTJXYEhw',
+            'key': 'a47369bba47369bba47369bb2ba7607210aa473a47369bbc0673701a873a60093d52a1d'
+        }
+    },
+    'github': {
+        'SCOPE': [
+            'user',
+        ],
+    }
+}
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,9 +177,23 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'app_users.User'
 
+
+LOGIN_REDIRECT_URL = '/'
+
+#OAuth
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.contrib.vkontakte.VKontakteOAuth2Backend',
+]
+
+
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS = True
-
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
@@ -175,6 +227,16 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+
+    'DEFAULT_THROTTLE_CLASSES': [
+            'rest_framework.throttling.AnonRateThrottle',
+            'rest_framework.throttling.UserRateThrottle'
+        ],
+
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '4/min',
+        'user': '20/min'
+    },
 
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
