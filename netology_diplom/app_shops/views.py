@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from requests import get
 
 from rest_framework.response import Response
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from yaml import load as load_yaml, Loader
 
@@ -15,7 +16,7 @@ from .models import Shop, Category, Product, ProductInfo, Parameter, ProductPara
 from .serializers import CategorySerializer, ShopSerializer, ProductInfoSerializer
 
 
-class CategoryView(ListAPIView):
+class CategoryView(ReadOnlyModelViewSet):
     """
     Класс для просмотра категорий
     """
@@ -23,7 +24,7 @@ class CategoryView(ListAPIView):
     serializer_class = CategorySerializer
 
 
-class ShopView(ListAPIView):
+class ShopView(ReadOnlyModelViewSet):
     """
     Класс для просмотра списка магазинов
     """
