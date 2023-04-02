@@ -63,30 +63,20 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+SOCIALACCOUNT_AUTO_SIGNUP = False
+
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
-    # 'google': {
-    #     'SCOPE': [
-    #         # 'profile',
-    #         # 'email',
-    #     ],
-    #     'AUTH_PARAMS': {
-    #         'access_type': 'offline',
-    #     },
-    #     'OAUTH_PKCE_ENABLED': True,
-    # },
-    # 'vk': {
-    #     'APP': {
-    #         'client_id': '51583915',
-    #         'secret': 'EagLl8X3NsEkUTJXYEhw',
-    #         'key': 'a47369bba47369bba47369bb2ba7607210aa473a47369bbc0673701a873a60093d52a1d'
-    #     }
-    # },
-    'github': {
-        'SCOPE': [
-            'user',
-        ],
-    }
+    'vk': {
+        'APP': {
+            'client_id': '51583915',
+            'secret': 'EagLl8X3NsEkUTJXYEhw',
+            'key': 'a47369bba47369bba47369bb2ba7607210aa473a47369bbc0673701a873a60093d52a1d'
+        }
+    },
 }
 
 
@@ -106,7 +96,7 @@ ROOT_URLCONF = 'netology_diplom.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

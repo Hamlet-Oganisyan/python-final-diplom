@@ -2,7 +2,6 @@ from distutils.util import strtobool
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
 from django.db.models import Q
 from django.http import JsonResponse
 from requests import get

@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.views.generic import TemplateView
 from app_users.models import Contact, ConfirmEmailToken
 from .serializers import UserSerializer, ContactSerializer
 from .signals import new_user_registered
@@ -106,7 +106,7 @@ class AccountDetails(APIView):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
-    # Редактирование методом POST
+    # Редактирование данных
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Необходимо войти в систему'}, status=403)
@@ -149,6 +149,7 @@ class ContactView(APIView):
         serializer = ContactSerializer(contact, many=True)
         return Response(serializer.data)
 
+    # Отправка данных
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Необходимо войти в систему'}, status=403)
