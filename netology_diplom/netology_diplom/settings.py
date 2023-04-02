@@ -72,9 +72,9 @@ SOCIALACCOUNT_AUTO_SIGNUP = False
 SOCIALACCOUNT_PROVIDERS = {
     'vk': {
         'APP': {
-            'client_id': '51583915',
-            'secret': 'EagLl8X3NsEkUTJXYEhw',
-            'key': 'a47369bba47369bba47369bb2ba7607210aa473a47369bbc0673701a873a60093d52a1d'
+            'client_id': os.getenv('VK_CLIENT_ID'),
+            'secret': os.getenv('VK_SECRET'),
+            'key': os.getenv('VK_KEY'),
         }
     },
 }
