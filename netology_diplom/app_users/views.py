@@ -5,10 +5,9 @@ from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.views.generic import TemplateView
 from app_users.models import Contact, ConfirmEmailToken
 from .serializers import UserSerializer, ContactSerializer
-from .signals import new_user_registered
+from netology_diplom.celery import send_email
 
 
 class RegisterAccount(APIView):
@@ -41,7 +40,13 @@ class RegisterAccount(APIView):
                     user = user_serializer.save()
                     user.set_password(request.data['password'])
                     user.save()
-                    new_user_registered.send(sender=self.__class__, user_id=user.id)
+
+                    # Отправка письма с подтверждением почты.
+                    token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user.id)
+                    title = f'Подтверждение регистрации пользователя: {token.user.email}'
+                    message = f'Токен: {token.key}'
+                    email = token.user.email
+                    send_email.delay(title, message, email)
                     return JsonResponse({'Status': True})
                 else:
                     return JsonResponse({'Status': False, 'Errors': user_serializer.errors})

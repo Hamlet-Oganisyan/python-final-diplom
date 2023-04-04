@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from ujson import loads as load_json
 from .models import Order, OrderItem
 from .serializers import OrderSerializer, OrderItemSerializer
-from .signals import new_order
+from netology_diplom.celery import send_email
 
 class BasketView(APIView):
     """
@@ -157,7 +157,12 @@ class OrderView(APIView):
                     return JsonResponse({'Status': False, 'Errors': 'Неправильно указаны аргументы'})
                 else:
                     if is_updated:
-                        new_order.send(sender=self.__class__, user_id=request.user.id)
+                        # Отправка письма при изменении статуса заказа.
+                        user = User.objects.get(id=request.user.id)
+                        title = 'Уведомление о смене статуса заказа'
+                        message = 'Заказ сформирован.'
+                        email = user.email
+                        send_email.apply_async((title, message, email), countdown=5 * 60)
                         return JsonResponse({'Status': True})
 
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
